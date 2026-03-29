@@ -108,7 +108,6 @@ namespace DG.DOTweenEditor
             { DOTweenAnimation.AnimationType.CameraRect, new[] { typeof(Camera) } },
 #if true // UI_MARKER
             { DOTweenAnimation.AnimationType.UIWidthHeight, new[] { typeof(RectTransform) } },
-            { DOTweenAnimation.AnimationType.FillAmount, new[] { typeof(Image) } },
 #endif
         };
 
@@ -135,7 +134,6 @@ namespace DG.DOTweenEditor
             "Scale",
             "Color", "Fade",
 #if true // UI_MARKER
-            "FillAmount",
             "Text",
 #endif
 #if false // TK2D_MARKER
@@ -363,9 +361,6 @@ namespace DG.DOTweenEditor
                         _src.endValueFloat = 0;
                         _src.optionalBool0 = _src.animationType == DOTweenAnimation.AnimationType.UIWidthHeight;
                         break;
-                    case DOTweenAnimation.AnimationType.FillAmount:
-                        _src.endValueFloat = 1;
-                        break;
                     case DOTweenAnimation.AnimationType.Color:
                     case DOTweenAnimation.AnimationType.Fade:
                         _isLightSrc = targetGO.GetComponent<Light>() != null;
@@ -510,12 +505,6 @@ namespace DG.DOTweenEditor
                     else GUIEndValueV2();
                     _src.optionalBool0 = EditorGUILayout.Toggle("Uniform Scale", _src.optionalBool0);
                     break;
-                case DOTweenAnimation.AnimationType.FillAmount:
-                    GUIEndValueFloat();
-                    if (_src.endValueFloat < 0) _src.endValueFloat = 0;
-                    if (_src.endValueFloat > 1) _src.endValueFloat = 1;
-                    canBeRelative = false;
-                    break;
                 case DOTweenAnimation.AnimationType.Color:
                     GUIEndValueColor();
                     canBeRelative = false;
@@ -547,10 +536,7 @@ namespace DG.DOTweenEditor
                     GUIEndValueV3(targetGO);
                     canBeRelative = false;
                     _src.optionalInt0 = EditorGUILayout.IntSlider(new GUIContent("    Vibrato", "How much will the shake vibrate"), _src.optionalInt0, 1, 50);
-                    using (new GUILayout.HorizontalScope()) {
-                        _src.optionalFloat0 = EditorGUILayout.Slider(new GUIContent("    Randomness", "The shake randomness"), _src.optionalFloat0, 0, 90);
-                        _src.optionalShakeRandomnessMode = (ShakeRandomnessMode)EditorGUILayout.EnumPopup(_src.optionalShakeRandomnessMode, GUILayout.Width(70));
-                    }
+                    _src.optionalFloat0 = EditorGUILayout.Slider(new GUIContent("    Randomness", "The shake randomness"), _src.optionalFloat0, 0, 90);
                     _src.optionalBool1 = EditorGUILayout.Toggle(new GUIContent("    FadeOut", "If selected the shake will fade out, otherwise it will constantly play with full force"), _src.optionalBool1);
                     if (_src.animationType == DOTweenAnimation.AnimationType.ShakePosition) _src.optionalBool0 = EditorGUILayout.Toggle("    Snapping", _src.optionalBool0);
                     break;
